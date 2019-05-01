@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+  <html lang="en">
+  <head>
+    <title>Flask Python Shell to Web Emulation</title>
+    <style>
+        body {
+            margin: 0;
+            display: flex;
+            flex-flow: column;
+            flex-direction: column;
+            width: 100%;
+        }
+
+        pre {
+            white-space: pre-wrap;       /* css-3 */
+            white-space: -moz-pre-wrap;  /* Mozilla, since 1999 */
+            white-space: -pre-wrap;      /* Opera 4-6 */
+            white-space: -o-pre-wrap;    /* Opera 7 */
+            word-wrap: break-word;       /* Internet Explorer 5.5+ */
+        }  
+
+        .result_block {
+            display: inline-block;
+            height: 80vh;
+            overflow: auto;
+            width: 100%;
+            background-color: black;
+            color: white;
+            flex-grow: 1;
+            flex: 1 1 auto;
+        }
+
+        .container {
+            display: flex;
+            flex-direction: column;
+            height: 100vh;
+        }
+
+        .command_block{
+            background-color: rgba(255, 255, 0, 0);
+            flex: 0 1 auto;
+            padding: 10px;
+        }
+    </style>
+
+</head>
+<body>
+    <div class="container">
+            <div class="command_block">
+                    <form id="exec" name="exec" method="POST" role="form">
+                        <input id="command" name="command" type="text" class="command" placeholder="Command"/>
+                        <input id="data" name="data" type="text" class="data" placeholder="Data"/>
+                        <input id="exec_submit" value="Execute" type="button"/>
+                    </form>
+            </div>
+                <div class="result_block"></div>
+            </div>
+
+</body>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+
+<script type="text/javascript">
+$( document ).ready(function() {
+
+    $(function(){
+        $('#exec_submit').on('click', function(event) {
+
+
+            $.ajax({
+                url: '/send',
+                data: $('form').serialize(),
+                type: 'POST',
+                success: function(response){
+                    var msg = $.parseJSON(response);
+                    $('div.result_block').append( '<div><b style="color:red"><pre>> '+msg['command'] + ' ' + msg['data'] + '</b><br>' + msg['result'] + '\n</pre></div>' );  
+                    $('div.result_block').animate({ scrollTop: $('div.result_block')[0].scrollHeight}, 1000); // emulate autoscroll effect
+                },
+                error: function(error){
+                    console.log(error);
+                }
+            });
+        });
+    });
+});
+</script>
+</html>

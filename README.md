@@ -7,5 +7,7 @@ Set your commands in the server.py file, and execute the script using:
 
 requires Python 3.x  
 
+Two commands available for demonstration, *dmesg* and *ls* which accepts directory as parameter.  
+
 ## See demo
 ![flask-python-shell-web-emulator](https://user-images.githubusercontent.com/640643/57008539-8c83fe00-6bf9-11e9-8f25-e812467d8b96.gif)
